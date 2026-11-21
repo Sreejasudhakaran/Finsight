@@ -40,6 +40,8 @@ def scan_all(db: Session = Depends(get_db), user=Depends(get_current_user)):
             df = yf.download(ticker, period="3mo", auto_adjust=True, progress=False)
             if df.empty or len(df) < 20:
                 continue
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
             result = detect_anomalies(df)
             anomalies = result[result["is_anomaly"]]
             if not anomalies.empty:
@@ -79,6 +81,8 @@ def ticker_anomaly(ticker: str, user=Depends(get_current_user)):
         df = yf.download(ticker, period="6mo", auto_adjust=True, progress=False)
         if df.empty:
             raise HTTPException(status_code=404, detail="No data")
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
         result = detect_anomalies(df)
         anomalies = result[result["is_anomaly"]].tail(10)
         return {

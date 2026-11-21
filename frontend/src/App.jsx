@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Dashboard from "./components/Dashboard";
 import "./App.css";
 
-const API = process.env.REACT_APP_API_URL || "http://localhost:8000";
+const API = process.env.REACT_APP_API_URL || "http://localhost/api";
 
 export default function App() {
   const [token, setToken]   = useState(localStorage.getItem("fs_token") || "");

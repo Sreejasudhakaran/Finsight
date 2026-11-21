@@ -57,6 +57,8 @@ def get_history(ticker: str, period: str = "1mo", db: Session = Depends(get_db),
         df = yf.download(ticker, period=period, auto_adjust=True, progress=False)
         if df.empty:
             raise HTTPException(status_code=404, detail="No data found")
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
         records = []
         for ts, row in df.iterrows():
             records.append({

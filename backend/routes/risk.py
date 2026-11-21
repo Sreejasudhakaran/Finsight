@@ -36,6 +36,8 @@ def portfolio_risk(db: Session = Depends(get_db), user=Depends(get_current_user)
             df = yf.download(ticker, period="3mo", auto_adjust=True, progress=False)
             if df.empty:
                 continue
+            if isinstance(df.columns, pd.MultiIndex):
+                df.columns = df.columns.get_level_values(0)
             returns = df["Close"].pct_change().dropna()
             var_95     = round(compute_var(returns, 0.95) * 100, 4)   # as %
             volatility = round(compute_volatility(returns), 4)          # annualised
@@ -66,13 +68,15 @@ def ticker_risk(ticker: str, db: Session = Depends(get_db), user=Depends(get_cur
         df = yf.download(ticker, period="6mo", auto_adjust=True, progress=False)
         if df.empty:
             raise HTTPException(status_code=404, detail="No data")
+        if isinstance(df.columns, pd.MultiIndex):
+            df.columns = df.columns.get_level_values(0)
         returns = df["Close"].pct_change().dropna()
         return {
             "ticker": ticker,
             "var_95":  round(compute_var(returns, 0.95) * 100, 4),
             "var_99":  round(compute_var(returns, 0.99) * 100, 4),
-            "volatility_20d": round(returns.rolling(20).std().iloc[-1] * np.sqrt(252), 4),
-            "volatility_60d": round(returns.rolling(60).std().iloc[-1] * np.sqrt(252), 4),
+            "volatility_20d": round(float(returns.rolling(20).std().iloc[-1] * np.sqrt(252)), 4),
+            "volatility_60d": round(float(returns.rolling(60).std().iloc[-1] * np.sqrt(252)), 4),
             "mean_return":    round(float(returns.mean()) * 100, 4),
             "max_drawdown":   round(float((df["Close"] / df["Close"].cummax() - 1).min()) * 100, 4),
             "sharpe_ratio":   round(float(returns.mean() / returns.std() * np.sqrt(252)), 4),
