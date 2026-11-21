@@ -77,18 +77,18 @@ Register an account, then explore the dashboard.
 
 ## API Endpoints
 
-| Method | Endpoint | Auth | Description |
+| Method | Endpoint |  Description |
 |---|---|---|---|
-| POST | `/auth/register` | ❌ | Create account |
-| POST | `/auth/token` | ❌ | Login, get JWT |
-| GET | `/prices/live` | ✅ | Fetch live prices (20 tickers) |
-| GET | `/prices/history/{ticker}` | ✅ | Historical OHLCV |
-| GET | `/prices/tickers` | ❌ | List tracked tickers |
-| GET | `/risk/portfolio` | ✅ | VaR + volatility for all tickers |
-| GET | `/risk/ticker/{ticker}` | ✅ | Detailed risk metrics |
-| GET | `/anomaly/scan` | ✅ | Isolation Forest scan — all tickers |
-| GET | `/anomaly/ticker/{ticker}` | ✅ | Anomaly detail for one ticker |
-| WS  | `/ws/prices` | ❌ | Live WebSocket price stream |
+| POST | `/auth/register` | Create account |
+| POST | `/auth/token`  | Login, get JWT |
+| GET | `/prices/live`  | Fetch live prices (20 tickers) |
+| GET | `/prices/history/{ticker}` |  Historical OHLCV |
+| GET | `/prices/tickers` |  List tracked tickers |
+| GET | `/risk/portfolio` |  VaR + volatility for all tickers |
+| GET | `/risk/ticker/{ticker}`  | Detailed risk metrics |
+| GET | `/anomaly/scan` |  Isolation Forest scan — all tickers |
+| GET | `/anomaly/ticker/{ticker}` |  Anomaly detail for one ticker |
+| WS  | `/ws/prices` |  Live WebSocket price stream |
 
 Interactive docs: [http://localhost:8000/docs](http://localhost:8000/docs)
 
