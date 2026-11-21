@@ -78,7 +78,7 @@ Register an account, then explore the dashboard.
 ## API Endpoints
 
 | Method | Endpoint |  Description |
-|---|---|---|---|
+|---|---|---|
 | POST | `/auth/register` | Create account |
 | POST | `/auth/token`  | Login, get JWT |
 | GET | `/prices/live`  | Fetch live prices (20 tickers) |
